@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Home')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-4">
+    <div class="hero mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-5 fw-bold">Everything you need, all in one place.</h1>
+                <p class="lead mb-4">Discover great products across electronics, fashion, home &amp; more.</p>
+                <a th:href="@{/products}" class="btn btn-light btn-lg fw-semibold">Shop Now</a>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mb-3">Shop by Category</h4>
+    <div class="d-flex flex-wrap gap-2 mb-5">
+        <a th:each="cat : ${categories}" th:href="@{/products(categoryId=${cat.id})}"
+           class="btn btn-outline-brand" th:text="${cat.name}">Category</a>
+    </div>
+
+    <h4 class="mb-3">Featured Products</h4>
+    <div class="row g-4">
+        <div class="col-6 col-md-4 col-lg-3" th:each="product : ${featuredProducts}">
+            <div class="product-card">
+                <a th:href="@{/products/{id}(id=${product.id})}">
+                    <img th:if="${product.imageUrl}" th:src="@{${product.imageUrl}}" th:alt="${product.name}">
+                    <img th:unless="${product.imageUrl}" src="https://placehold.co/400x300?text=No+Image" th:alt="${product.name}">
+                </a>
+                <div class="p-3">
+                    <h6 class="mb-1" th:text="${product.name}">Product name</h6>
+                    <p class="price-tag mb-2" th:text="'₹' + ${product.price}">₹0</p>
+                    <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-brand w-100">View</a>
+                </div>
+            </div>
+        </div>
+        <p th:if="${#lists.isEmpty(featuredProducts)}" class="text-muted">No products available yet.</p>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

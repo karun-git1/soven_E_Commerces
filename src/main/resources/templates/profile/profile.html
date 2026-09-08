@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('My Profile')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-4" style="max-width: 560px;">
+    <h3 class="mb-4">My Profile</h3>
+
+    <div class="alert alert-success" th:if="${updated}">Profile updated successfully.</div>
+
+    <div class="product-card p-4">
+        <form th:action="@{/profile}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" th:value="${user.name}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" th:value="${user.email}" class="form-control" disabled>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Phone</label>
+                <input type="text" name="phone" th:value="${user.phone}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <textarea name="address" class="form-control" rows="3" th:text="${user.address}"></textarea>
+            </div>
+            <button type="submit" class="btn btn-brand">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

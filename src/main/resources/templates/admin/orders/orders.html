@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Manage Orders')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 px-0">
+            <div th:replace="~{fragments/admin-navbar :: sidebar}"></div>
+        </div>
+        <div class="col-md-10 py-4">
+            <h3 class="mb-4">Manage Orders</h3>
+            <div class="dashboard-card">
+                <table class="table align-middle">
+                    <thead><tr><th>Order #</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th></th></tr></thead>
+                    <tbody>
+                    <tr th:each="order : ${orders.content}">
+                        <td th:text="${order.id}">1001</td>
+                        <td th:text="${order.user.name}">Customer</td>
+                        <td th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy')}">Date</td>
+                        <td th:text="'₹' + ${order.totalAmount}">₹0</td>
+                        <td><span class="badge badge-status" th:classappend="'status-' + ${order.status}" th:text="${order.status}">Status</span></td>
+                        <td><a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn btn-sm btn-outline-brand">Manage</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/header :: head(${product.name})}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-4">
+    <div class="alert alert-success alert-auto-dismiss" th:if="${param.added != null}">Added to cart!</div>
+    <div class="row g-4">
+        <div class="col-md-5">
+            <img th:if="${product.imageUrl}" th:src="@{${product.imageUrl}}" th:alt="${product.name}"
+                 class="img-fluid rounded-4 shadow-sm">
+            <img th:unless="${product.imageUrl}" src="https://placehold.co/500x400?text=No+Image"
+                 class="img-fluid rounded-4 shadow-sm">
+        </div>
+        <div class="col-md-7">
+            <span class="badge bg-light text-dark mb-2" th:if="${product.category}" th:text="${product.category.name}">Category</span>
+            <h2 th:text="${product.name}">Product name</h2>
+            <p class="price-tag fs-3" th:text="'₹' + ${product.price}">₹0</p>
+            <p th:text="${product.description}">Description</p>
+            <p>
+                <span th:if="${product.inStock}" class="badge badge-status status-DELIVERED">In Stock (<span th:text="${product.stock}">0</span>)</span>
+                <span th:unless="${product.inStock}" class="badge badge-status status-CANCELLED">Out of Stock</span>
+            </p>
+
+            <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post" class="d-flex align-items-center gap-2 mt-4"
+                  sec:authorize="hasAuthority('ROLE_CUSTOMER')" th:if="${product.inStock}">
+                <input type="number" name="quantity" value="1" min="1" th:max="${product.stock}" class="form-control" style="width: 100px;">
+                <button type="submit" class="btn btn-brand">Add to Cart</button>
+            </form>
+            <div sec:authorize="!isAuthenticated()" class="mt-4">
+                <a th:href="@{/auth/login}" class="btn btn-brand">Login to purchase</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

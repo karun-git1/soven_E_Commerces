@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="alert(type, message)" th:if="${message}"
+     class="alert alert-auto-dismiss"
+     th:classappend="${type == 'error'} ? 'alert-danger' : 'alert-success'"
+     th:text="${message}">
+    Message
+</div>
+</body>
+</html>

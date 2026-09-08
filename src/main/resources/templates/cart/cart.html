@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Your Cart')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-4">
+    <h3 class="mb-4">Your Shopping Cart</h3>
+
+    <div th:if="${#lists.isEmpty(cart.items)}" class="text-center py-5">
+        <p class="text-muted fs-5">Your cart is empty.</p>
+        <a th:href="@{/products}" class="btn btn-brand">Continue Shopping</a>
+    </div>
+
+    <div class="row" th:unless="${#lists.isEmpty(cart.items)}">
+        <div class="col-lg-8">
+            <div class="product-card p-3 mb-3" th:each="item : ${cart.items}">
+                <div class="row align-items-center">
+                    <div class="col-3 col-md-2">
+                        <img th:if="${item.product.imageUrl}" th:src="@{${item.product.imageUrl}}"
+                             class="img-fluid rounded" th:alt="${item.product.name}">
+                        <img th:unless="${item.product.imageUrl}" src="https://placehold.co/100x100?text=No+Image"
+                             class="img-fluid rounded">
+                    </div>
+                    <div class="col-9 col-md-4">
+                        <h6 th:text="${item.product.name}">Product</h6>
+                        <p class="price-tag mb-0" th:text="'₹' + ${item.product.price}">₹0</p>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <form th:action="@{/cart/update/{id}(id=${item.id})}" method="post" class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    th:onclick="'stepQuantity(\'qty-' + ${item.id} + '\', -1)'">−</button>
+                            <input type="number" th:id="'qty-' + ${item.id}" name="quantity" th:value="${item.quantity}" min="0"
+                                   th:max="${item.product.stock}" class="form-control form-control-sm text-center" style="width: 60px;">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    th:onclick="'stepQuantity(\'qty-' + ${item.id} + '\', 1)'">+</button>
+                            <button type="submit" class="btn btn-sm btn-outline-brand">Update</button>
+                        </form>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <strong th:text="'₹' + ${item.subtotal}">₹0</strong>
+                    </div>
+                    <div class="col-2 col-md-1 text-end">
+                        <form th:action="@{/cart/remove/{id}(id=${item.id})}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">✕</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="sidebar">
+                <h5 class="mb-3">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal</span>
+                    <strong th:text="'₹' + ${total}">₹0</strong>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold price-tag" th:text="'₹' + ${total}">₹0</span>
+                </div>
+                <a th:href="@{/checkout}" class="btn btn-brand w-100">Proceed to Checkout</a>
+                <a th:href="@{/products}" class="btn btn-link w-100 mt-2">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+<script th:src="@{/js/cart.js}"></script>
+</body>
+</html>

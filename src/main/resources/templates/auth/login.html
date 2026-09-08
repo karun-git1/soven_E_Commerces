@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Login')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-5" style="max-width: 420px;">
+    <div class="product-card p-4">
+        <h3 class="mb-4 text-center">Welcome Back</h3>
+
+        <div class="alert alert-danger" th:if="${error}">Invalid email or password.</div>
+        <div class="alert alert-success" th:if="${param.registered}">Registration successful! Please login.</div>
+
+        <form th:action="@{/auth/login}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-brand w-100">Login</button>
+        </form>
+        <p class="text-center mt-3 mb-0">
+            Don't have an account? <a th:href="@{/auth/register}">Sign up</a>
+        </p>
+        <p class="text-center text-muted small mt-2">Demo admin: admin@shop.com / admin123</p>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

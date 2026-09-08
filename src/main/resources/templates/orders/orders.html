@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('My Orders')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-4">
+    <h3 class="mb-4">My Orders</h3>
+
+    <div th:if="${orders.empty}" class="text-center py-5">
+        <p class="text-muted fs-5">You haven't placed any orders yet.</p>
+        <a th:href="@{/products}" class="btn btn-brand">Start Shopping</a>
+    </div>
+
+    <div class="product-card p-3 mb-3" th:each="order : ${orders.content}">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <strong>Order #<span th:text="${order.id}">1001</span></strong>
+                <div class="text-muted small" th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, HH:mm')}">Date</div>
+            </div>
+            <div class="col-md-3">
+                <span class="badge badge-status" th:classappend="'status-' + ${order.status}" th:text="${order.status}">Status</span>
+            </div>
+            <div class="col-md-3">
+                <strong th:text="'₹' + ${order.totalAmount}">₹0</strong>
+            </div>
+            <div class="col-md-3 text-md-end">
+                <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-sm btn-outline-brand">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

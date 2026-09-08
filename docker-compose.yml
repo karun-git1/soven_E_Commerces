@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD before starting Docker Compose}
+      MYSQL_DATABASE: ecommerce_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: ecommerce-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:mysql://mysql:3306/ecommerce_db?createDatabaseIfNotExist=true
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD before starting Docker Compose}
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+
+volumes:
+  mysql_data:
+  uploads_data:

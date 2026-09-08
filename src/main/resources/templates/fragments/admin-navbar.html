@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="sidebar" class="admin-sidebar py-3">
+    <a th:href="@{/admin/dashboard}">📊 Dashboard</a>
+    <a th:href="@{/admin/products}">📦 Products</a>
+    <a th:href="@{/admin/categories}">🏷️ Categories</a>
+    <a th:href="@{/admin/orders}">🧾 Orders</a>
+    <a th:href="@{/}">⬅ Back to Store</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">🛍️ ShopEase</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/products}">Products</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/categories}">Categories</a></li>
+            </ul>
+            <form class="d-flex me-3" th:action="@{/products}" method="get">
+                <input class="form-control form-control-sm" type="search" name="search" placeholder="Search products...">
+                <button class="btn btn-sm btn-outline-brand ms-2" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav align-items-lg-center">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/cart}">🛒 Cart</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/orders}">My Orders</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <a class="nav-link" th:href="@{/admin/dashboard}">Admin</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/profile}" sec:authentication="name">Profile</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/auth/logout}" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-secondary ms-2" type="submit">Logout</button>
+                    </form>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-sm btn-outline-brand ms-2" th:href="@{/auth/login}">Login</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-sm btn-brand ms-2" th:href="@{/auth/register}">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

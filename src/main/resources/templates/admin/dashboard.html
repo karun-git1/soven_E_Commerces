@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Admin Dashboard')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 px-0">
+            <div th:replace="~{fragments/admin-navbar :: sidebar}"></div>
+        </div>
+        <div class="col-md-10 py-4">
+            <h3 class="mb-4">Dashboard</h3>
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card">
+                        <div class="text-muted small">Products</div>
+                        <h2 th:text="${totalProducts}">0</h2>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card">
+                        <div class="text-muted small">Customers</div>
+                        <h2 th:text="${totalCustomers}">0</h2>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card">
+                        <div class="text-muted small">Orders</div>
+                        <h2 th:text="${totalOrders}">0</h2>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-card">
+                        <div class="text-muted small">Pending Orders</div>
+                        <h2 th:text="${pendingOrders}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-card mb-4">
+                <div class="text-muted small">Total Sales (recent orders)</div>
+                <h2 th:text="'₹' + ${totalSales}">₹0</h2>
+            </div>
+
+            <div class="dashboard-card">
+                <h5 class="mb-3">Recent Orders</h5>
+                <table class="table">
+                    <thead>
+                    <tr><th>Order #</th><th>Customer</th><th>Total</th><th>Status</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${recentOrders}">
+                        <td th:text="${order.id}">1001</td>
+                        <td th:text="${order.user.name}">Customer</td>
+                        <td th:text="'₹' + ${order.totalAmount}">₹0</td>
+                        <td><span class="badge badge-status" th:classappend="'status-' + ${order.status}" th:text="${order.status}">Status</span></td>
+                        <td><a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn btn-sm btn-outline-brand">View</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Order Details')}"></head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 px-0">
+            <div th:replace="~{fragments/admin-navbar :: sidebar}"></div>
+        </div>
+        <div class="col-md-10 py-4">
+            <h3 class="mb-4">Order #<span th:text="${order.id}">1001</span></h3>
+            <div class="alert alert-success" th:if="${param.updated}">Order status updated.</div>
+
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="dashboard-card mb-4">
+                        <h5 class="mb-3">Items</h5>
+                        <div class="d-flex justify-content-between mb-2" th:each="item : ${order.items}">
+                            <span th:text="${item.product.name} + ' × ' + ${item.quantity}">Item</span>
+                            <span th:text="'₹' + ${item.subtotal}">₹0</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <span>Total</span>
+                            <span th:text="'₹' + ${order.totalAmount}">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h5 class="mb-3">Customer &amp; Shipping</h5>
+                        <p class="mb-1"><strong th:text="${order.user.name}">Customer</strong> (<span th:text="${order.user.email}">email</span>)</p>
+                        <div th:if="${order.shippingAddress}">
+                            <p class="mb-1" th:text="${order.shippingAddress.addressLine}">Address</p>
+                            <p class="mb-1" th:text="${order.shippingAddress.city} + ', ' + ${order.shippingAddress.state} + ' - ' + ${order.shippingAddress.postalCode}">City</p>
+                            <p class="mb-0" th:text="'Phone: ' + ${order.shippingAddress.phone}">Phone</p>
+                        </div>
+                        <p class="mb-0 text-muted" th:unless="${order.shippingAddress}">No shipping address provided.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="dashboard-card mb-4">
+                        <h6>Payment</h6>
+                        <p class="mb-1">Method: <strong th:text="${order.paymentMethod}">UPI</strong></p>
+                        <p class="mb-0" th:if="${order.payment}">
+                            Status: <span class="badge badge-status" th:classappend="'status-' + ${order.payment.status}" th:text="${order.payment.status}">SUCCESS</span>
+                        </p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h6 class="mb-3">Update Order Status</h6>
+                        <form th:action="@{/admin/orders/{id}/status(id=${order.id})}" method="post">
+                            <select name="status" class="form-select mb-3">
+                                <option th:each="s : ${statuses}" th:value="${s}" th:selected="${s == order.status}" th:text="${s}"></option>
+                            </select>
+                            <button type="submit" class="btn btn-brand w-100">Update Status</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>
