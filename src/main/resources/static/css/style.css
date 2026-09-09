@@ -1,13 +1,16 @@
 :root {
-    --brand: #ff6a00;
-    --brand-dark: #e35d00;
-    --dark: #1f2430;
-    --muted: #6c757d;
-    --bg-soft: #f7f7fb;
+    --brand: #1261a0;
+    --brand-dark: #0b4778;
+    --accent: #1f9d68;
+    --accent-dark: #16734d;
+    --dark: #102a43;
+    --muted: #627d98;
+    --bg-soft: #f1f7fb;
+    --line: #d9e8f2;
 }
 
 body {
-    background-color: var(--bg-soft);
+    background: linear-gradient(180deg, #f8fcff 0%, var(--bg-soft) 45%, #edf8f2 100%);
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     color: var(--dark);
 }
@@ -22,15 +25,19 @@ a {
     color: var(--brand) !important;
 }
 
+.navbar-brand::first-letter {
+    color: var(--accent);
+}
+
 .btn-brand {
-    background-color: var(--brand);
-    border-color: var(--brand);
+    background-color: var(--accent);
+    border-color: var(--accent);
     color: #fff;
 }
 
 .btn-brand:hover {
-    background-color: var(--brand-dark);
-    border-color: var(--brand-dark);
+    background-color: var(--accent-dark);
+    border-color: var(--accent-dark);
     color: #fff;
 }
 
@@ -53,10 +60,10 @@ a {
 }
 
 .status-PENDING, .status-PROCESSING { background: #fff3cd; color: #856404; }
-.status-CONFIRMED { background: #d1ecf1; color: #0c5460; }
+.status-CONFIRMED { background: #d9efff; color: #075985; }
 .status-SHIPPED { background: #cfe2ff; color: #084298; }
-.status-OUT_FOR_DELIVERY { background: #e2d9f3; color: #4b2e83; }
-.status-DELIVERED { background: #d4edda; color: #155724; }
+.status-OUT_FOR_DELIVERY { background: #d7f4e5; color: #146c43; }
+.status-DELIVERED { background: #c9f0dc; color: #11613e; }
 .status-CANCELLED, .status-FAILED { background: #f8d7da; color: #721c24; }
 .status-SUCCESS { background: #d4edda; color: #155724; }
 
@@ -82,13 +89,13 @@ a {
 }
 
 .price-tag {
-    color: var(--brand);
+    color: var(--accent-dark);
     font-weight: 700;
     font-size: 1.2rem;
 }
 
 .hero {
-    background: linear-gradient(135deg, var(--brand) 0%, #ffb35c 100%);
+    background: linear-gradient(135deg, #0d4775 0%, var(--brand) 55%, var(--accent) 100%);
     color: #fff;
     border-radius: 16px;
     padding: 3rem 2rem;
@@ -103,7 +110,7 @@ a {
     position: relative;
     padding-left: 2rem;
     padding-bottom: 1.5rem;
-    border-left: 2px solid #dee2e6;
+    border-left: 2px solid var(--line);
     margin-left: 0.6rem;
 }
 
@@ -119,15 +126,15 @@ a {
     width: 1.1rem;
     height: 1.1rem;
     border-radius: 50%;
-    background: #dee2e6;
+    background: var(--line);
 }
 
 .timeline li.done::before {
-    background: var(--brand);
+    background: var(--accent);
 }
 
 .timeline li.done {
-    border-left-color: var(--brand);
+    border-left-color: var(--accent);
 }
 
 .sidebar {
@@ -151,7 +158,7 @@ a {
 }
 
 .admin-sidebar {
-    background: var(--dark);
+    background: linear-gradient(180deg, #102a43 0%, #0b4778 100%);
     min-height: calc(100vh - 56px);
     color: #fff;
 }
