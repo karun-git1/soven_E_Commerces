@@ -63,6 +63,30 @@ docker compose up --build
 
 This starts a MySQL container and the packaged Spring Boot app together, wired via the `prod` profile. The app will be available on **http://localhost:8080**.
 
+## Deploying to a Java-capable host (recommended)
+
+This project is a Spring Boot application, so it is not a good fit for Vercel as-is. For cloud deployment, use a Java-capable host such as **Render**, **Railway**, or **Azure App Service**.
+
+### Render example
+
+1. Push this repo to GitHub.
+2. In Render, create a new `Web Service` using the existing `Dockerfile`.
+3. Set environment variables:
+   - `SPRING_PROFILES_ACTIVE=prod`
+   - `DB_URL=jdbc:mysql://<host>:3306/ecommerce_db?createDatabaseIfNotExist=true`
+   - `DB_USERNAME=<your-db-user>`
+   - `DB_PASSWORD=<your-db-password>`
+4. Deploy the service.
+
+### Railway example
+
+1. Create a new project and deploy from GitHub.
+2. Add a MySQL service.
+3. Link the app service to the database and provide the same `DB_*` environment variables.
+4. Start the app.
+
+> Vercel is suitable for frontend-only apps. This project requires a Java runtime and a database, so it should be hosted on a platform that supports those services.
+
 ## Building a JAR
 
 ```bash
