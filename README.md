@@ -49,15 +49,15 @@ H2 console (dev only): http://localhost:8080/h2-console (JDBC URL: `jdbc:h2:mem:
 export SPRING_PROFILES_ACTIVE=prod
 export DB_URL=jdbc:mysql://localhost:3306/ecommerce_db?createDatabaseIfNotExist=true
 export DB_USERNAME=root
-export DB_PASSWORD=yourpassword
+export DB_PASSWORD=nurak@1234
 mvn spring-boot:run
 ```
 
 ## Running with Docker Compose (MySQL + app)
 
 ```bash
-export MYSQL_ROOT_PASSWORD=yourpassword
-export DB_PASSWORD=yourpassword
+export MYSQL_ROOT_PASSWORD=nurak@1234
+export DB_PASSWORD=nurak@1234
 docker compose up --build
 ```
 
