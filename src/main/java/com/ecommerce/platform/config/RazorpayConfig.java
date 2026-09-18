@@ -1,5 +1,6 @@
 package com.ecommerce.platform.config;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -28,5 +29,16 @@ public class RazorpayConfig {
         return isEnabled()
                 && keyId != null && !keyId.isBlank()
                 && keySecret != null && !keySecret.isBlank();
+    }
+
+    @PostConstruct
+    public void logConfigurationStatus() {
+        String keyPreview = keyId == null || keyId.isBlank()
+                ? "MISSING"
+                : keyId.substring(0, Math.min(12, keyId.length())) + "...";
+        System.out.println("PAYMENT PROVIDER: " + provider);
+        System.out.println("RAZORPAY KEY: " + keyPreview);
+        System.out.println("RAZORPAY SECRET: " + (keySecret == null || keySecret.isBlank() ? "MISSING" : "LOADED"));
+        System.out.println("CURRENCY: " + currency);
     }
 }
