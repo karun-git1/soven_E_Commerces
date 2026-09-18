@@ -46,13 +46,17 @@ public class PaymentController {
         CheckoutRequest request = new CheckoutRequest();
         request.setAddress(addressRequest);
         request.setPaymentMethod(paymentMethod);
-        var result = razorpayCheckoutService.createOrder(userService.getById(principal.getId()), request);
-        return ResponseEntity.ok(Map.of(
-                "orderId", result.orderId(),
-                "razorpayOrderId", result.razorpayOrderId(),
-                "amount", result.amount(),
-                "currency", result.currency(),
-                "keyId", razorpayConfig.getKeyId()));
+        try {
+            var result = razorpayCheckoutService.createOrder(userService.getById(principal.getId()), request);
+            return ResponseEntity.ok(Map.of(
+                    "orderId", result.orderId(),
+                    "razorpayOrderId", result.razorpayOrderId(),
+                    "amount", result.amount(),
+                    "currency", result.currency(),
+                    "keyId", razorpayConfig.getKeyId()));
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.internalServerError().body(Map.of("message", ex.getMessage()));
+        }
     }
 
     @PostMapping("/razorpay/verify")

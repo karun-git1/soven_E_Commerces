@@ -11,7 +11,13 @@ document.addEventListener('DOMContentLoaded', function () {
 				method: 'POST',
 				body: new FormData(form)
 			});
-			var orderData = await response.json();
+			var responseText = await response.text();
+			var orderData;
+			try {
+				orderData = JSON.parse(responseText);
+			} catch (parseError) {
+				throw new Error('Payment service returned an unexpected response. Check the server configuration.');
+			}
 			if (!response.ok) throw new Error(orderData.message || 'Could not start payment');
 
 			var checkout = new Razorpay({
