@@ -10,6 +10,7 @@ import com.ecommerce.platform.service.CartService;
 import com.ecommerce.platform.service.CheckoutService;
 import com.ecommerce.platform.service.OrderService;
 import com.ecommerce.platform.service.UserService;
+import com.ecommerce.platform.config.RazorpayConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class CheckoutController {
     private final CheckoutService checkoutService;
     private final UserService userService;
     private final OrderService orderService;
+    private final RazorpayConfig razorpayConfig;
 
     @GetMapping
     public String checkoutPage(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
@@ -38,6 +40,7 @@ public class CheckoutController {
         model.addAttribute("total", cartService.getTotal(cart));
         model.addAttribute("addressRequest", new ShippingAddressRequest());
         model.addAttribute("paymentMethods", PaymentMethod.values());
+        model.addAttribute("razorpayEnabled", razorpayConfig.isEnabled());
         return "checkout/checkout";
     }
 
@@ -46,6 +49,9 @@ public class CheckoutController {
                               @ModelAttribute ShippingAddressRequest addressRequest,
                               @RequestParam("paymentMethod") String paymentMethod,
                               Model model) {
+        if (razorpayConfig.isEnabled()) {
+            return "redirect:/checkout";
+        }
         CheckoutRequest request = new CheckoutRequest();
         request.setAddress(addressRequest);
         request.setPaymentMethod(paymentMethod);

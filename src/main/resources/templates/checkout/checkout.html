@@ -45,13 +45,17 @@
 
                 <div class="product-card p-4">
                     <h5 class="mb-3">Payment Method</h5>
+                    <div th:if="${razorpayEnabled}" class="alert alert-info">
+                        Secure payment powered by Razorpay. UPI, cards, net banking and wallets are available in the gateway checkout.
+                    </div>
                     <div class="d-flex flex-column gap-2">
-                        <div class="form-check border rounded p-3 payment-option" th:each="method : ${paymentMethods}">
+                        <div th:if="${!razorpayEnabled}" class="form-check border rounded p-3 payment-option" th:each="method : ${paymentMethods}">
                             <input class="form-check-input" type="radio" name="paymentMethod"
                                    th:id="${'pm-' + method}" th:value="${method}" required>
                             <label class="form-check-label" th:for="${'pm-' + method}" th:text="${method}">Method</label>
                         </div>
                     </div>
+                    <input th:if="${razorpayEnabled}" type="hidden" name="paymentMethod" value="UPI">
                 </div>
             </div>
 
@@ -67,7 +71,7 @@
                         <span class="fw-bold">Total</span>
                         <span class="fw-bold price-tag" th:text="'₹' + ${total}">₹0</span>
                     </div>
-                    <button type="submit" class="btn btn-brand w-100">Place Order</button>
+                    <button type="submit" class="btn btn-brand w-100" th:text="${razorpayEnabled} ? 'Pay securely' : 'Place Order'">Place Order</button>
                 </div>
             </div>
         </div>
@@ -76,6 +80,8 @@
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 <div th:replace="~{fragments/footer :: scripts}"></div>
+<script th:if="${razorpayEnabled}" src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script th:src="@{/js/payment.js}"></script>
 <script th:src="@{/js/checkout.js}"></script>
 </body>
 </html>

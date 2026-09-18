@@ -83,6 +83,8 @@
 | status | VARCHAR | PaymentStatus enum |
 | amount | DECIMAL(10,2) | |
 | transaction_id | VARCHAR | nullable until success |
+| razorpay_order_id | VARCHAR | nullable for mock/COD payments |
+| razorpay_payment_id | VARCHAR | nullable until Razorpay success |
 | paid_at | TIMESTAMP | nullable |
 
 ## Relationships

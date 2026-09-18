@@ -39,8 +39,22 @@ INITIATED → PROCESSING → SUCCESS
                        → FAILED (customer may retry checkout)
 ```
 
-## Swapping in a Real Gateway
+## Razorpay Checkout
 
-1. Implement the real call inside `RazorpayPaymentGateway.charge(...)` using the provider's SDK and the `app.payment.razorpay.key` / `app.payment.razorpay.secret` properties.
-2. Update `PaymentService` to select between `MockPaymentGateway` and `RazorpayPaymentGateway` based on the `app.payment.provider` property (or use Spring's `@Primary`/`@Qualifier` to pick the active bean).
-3. Add webhook handling if the provider confirms payment asynchronously rather than synchronously.
+Razorpay mode is enabled with environment variables and the existing application properties:
+
+```powershell
+$env:RAZORPAY_KEY_ID="rzp_test_your_key"
+$env:RAZORPAY_KEY_SECRET="your_test_secret"
+```
+
+Set `app.payment.provider=razorpay` in `application.properties` (or an active profile). Never commit the secret.
+
+The Razorpay flow is asynchronous because the browser opens Razorpay Checkout:
+
+1. `POST /payment/razorpay/order` validates the cart and stock, saves a pending local order, and creates a Razorpay order in paise.
+2. `static/js/payment.js` opens Razorpay Checkout. Razorpay handles UPI, Google Pay, PhonePe, Paytm, cards, net banking, and wallets according to the merchant account configuration.
+3. `POST /payment/razorpay/verify` checks that the gateway order belongs to the local payment and verifies the HMAC-SHA256 signature on the server.
+4. Only after verification does the application mark the payment and order successful, reduce stock, and clear the cart.
+
+The application never receives raw card number, expiry, or CVV values. Mock mode remains the default for local tests. Production should additionally add Razorpay webhooks for recovery when a customer loses connectivity after payment.

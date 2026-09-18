@@ -36,5 +36,11 @@ public class Payment {
 
     private String transactionId;
 
+    @Column(unique = true)
+    private String razorpayOrderId;
+
+    @Column(unique = true)
+    private String razorpayPaymentId;
+
     private LocalDateTime paidAt;
 }
