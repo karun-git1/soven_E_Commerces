@@ -41,6 +41,7 @@ public class CheckoutController {
         model.addAttribute("addressRequest", new ShippingAddressRequest());
         model.addAttribute("paymentMethods", PaymentMethod.values());
         model.addAttribute("razorpayEnabled", razorpayConfig.isEnabled());
+        model.addAttribute("razorpayConfigured", razorpayConfig.isConfigured());
         return "checkout/checkout";
     }
 

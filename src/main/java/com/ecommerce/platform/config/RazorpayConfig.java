@@ -23,4 +23,10 @@ public class RazorpayConfig {
     public boolean isEnabled() {
         return "razorpay".equalsIgnoreCase(provider);
     }
+
+    public boolean isConfigured() {
+        return isEnabled()
+                && keyId != null && !keyId.isBlank()
+                && keySecret != null && !keySecret.isBlank();
+    }
 }

@@ -48,6 +48,9 @@
                     <div th:if="${razorpayEnabled}" class="alert alert-info">
                         Secure payment powered by Razorpay. UPI, cards, net banking and wallets are available in the gateway checkout.
                     </div>
+                    <div th:if="${razorpayEnabled && !razorpayConfigured}" class="alert alert-danger">
+                        Razorpay test credentials are missing. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET before starting the application.
+                    </div>
                     <div class="d-flex flex-column gap-2">
                         <div th:if="${!razorpayEnabled}" class="form-check border rounded p-3 payment-option" th:each="method : ${paymentMethods}">
                             <input class="form-check-input" type="radio" name="paymentMethod"
@@ -71,7 +74,7 @@
                         <span class="fw-bold">Total</span>
                         <span class="fw-bold price-tag" th:text="'₹' + ${total}">₹0</span>
                     </div>
-                    <button type="submit" class="btn btn-brand w-100" th:text="${razorpayEnabled} ? 'Pay securely' : 'Place Order'">Place Order</button>
+                    <button type="submit" class="btn btn-brand w-100" th:disabled="${razorpayEnabled && !razorpayConfigured}" th:text="${razorpayEnabled} ? 'Pay securely' : 'Place Order'">Place Order</button>
                 </div>
             </div>
         </div>
